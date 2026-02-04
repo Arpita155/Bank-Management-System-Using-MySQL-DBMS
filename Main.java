@@ -2,7 +2,7 @@ import service.BankService;
 
 import java.util.Scanner;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
 
         BankService service = new BankService();
@@ -80,29 +80,22 @@ public class main {
                     service.accountDetails(accNumber);
                     break;
                 case 8:
-                    System.out.println("the following options can be uploaded. choose one of them.");
-                    System.out.println("1. First name ");
-                    System.out.println("2. last name ");
-                    System.out.println("3. Email ");
-                    System.out.println("4. Phone number ");
-                    System.out.println("5. address ");
-                    System.out.println("Enter your choice ");
-                    int ch = sc.nextInt();
-                    switch (ch){
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                            break;
-                        case 5:
-                            break;
-                        default:
-                            System.out.println("");
-                    }
+                    System.out.println("Enter account holder's first name : ");
+                    fname = sc.nextLine();
+                    System.out.println("Enter account holder's last name : ");
+                    lname = sc.nextLine();
+                    System.out.println("Enter account holder's email : ");
+                    email = sc.nextLine();
+                    System.out.println("Enter account holder's phone number : ");
+                    pho = sc.nextLine();
+                    System.out.println("Enter account holder's address : ");
+                    address = sc.nextLine();
+                    service.updateCustomerDetails(fname,lname,email,pho,address);
+
                 case 9:
+                    System.out.println("Thank you for visiting gg bank");
+                    System.out.println();
+                    System.out.println("=====================================");
                     break;
                 default:
                     System.out.println("Invalid selection");

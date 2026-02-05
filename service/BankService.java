@@ -21,8 +21,8 @@ public class BankService {
         long min = 1000000000L;
         long max = 9999999999L;
         return min + (long)(Math.random()*(max-min));
-
     }
+
     public void createAccount(String fname, String lname, String email, String pno, String address){
         try{
             // create a new customer record
@@ -62,14 +62,16 @@ public class BankService {
             }
 
             // Close the account.
-            AccountDAO.closeAccount(accountNumber);
+            if(AccountDAO.closeAccount(accountNumber)){
+
+            }else{
+
+            }
             acc.setStatus("Closed");
 
         }catch (AccountNotFoundException | AccountClosedException e){
             System.out.println("Error : "+e.getMessage());
         }
-
-
 
     }
 

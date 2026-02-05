@@ -27,4 +27,35 @@ public class AccountDAO {
         }
         return true;
     }
+
+    public Account getAccount(long accNumber) throws SQLException{
+        // sql query preparation
+        String sql = "SELECT * FROM bankaccounts WHERE AccountNumber = ?";   // leading the data. I am not modifying anything
+
+        // create connection. prepare the sql statement for execution.
+        try(Connection conn = DBUtil.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);){
+
+            ps.setLong(1,accNumber);
+
+            // execute the query
+            ResultSet record = ps.executeQuery();   // this will store the ROW returned by the DBMS upon execution of SQL statement.
+
+            // extract details from the ResultSet and create an object of Account class.
+            record.next();
+            Account obj = new Account(record.getLong("AccountNumber"),record.getInt("CustomerID"),
+                    record.getString("AccountType"),record.getDouble("Balance"),record.getString("Status"),
+                    record.getDate("OpeningDate").toLocalDate());
+            return obj;
+        }
+    }
+
+    public boolean closeAccount(long accNumber) throws SQLException{
+        String sql = "UPDATE bankaccounts SET Status = 'Closed' WHERE bankaccount=?";
+        try(Connection conn = DBUtil.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);){
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
 }

@@ -8,12 +8,11 @@ import java.time.LocalDate;
 
 public class AccountDAO {
     public boolean createAccount(Account acc) throws SQLException {
-        String sql = "INSERT INTO bankAccounts (AccountNumber, CustomerID, AccountType, Balance, Status, OpeningDate) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO bankaccounts (AccountNumber, CustomerID, AccountType, Balance, Status, OpeningDate) VALUES (?,?,?,?,?,?)";
 
         try(Connection conn = DBUtil.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            PreparedStatement ps = conn.prepareStatement(sql)){
 
-            // execute the statement
             ps.setLong(1,acc.getAccountNumber());
             ps.setInt(2,acc.getCustomerId());
             ps.setString(3,acc.getAccountType());
@@ -43,19 +42,38 @@ public class AccountDAO {
 
             // extract details from the ResultSet and create an object of Account class.
             record.next();
-            Account obj = new Account(record.getLong("AccountNumber"),record.getInt("CustomerID"),
-                    record.getString("AccountType"),record.getDouble("Balance"),record.getString("Status"),
+            Account obj = new Account(
+                    record.getLong("AccountNumber"),
+                    record.getInt("CustomerID"),
+                    record.getString("AccountType"),
+                    record.getDouble("Balance"),
+                    record.getString("Status"),
                     record.getDate("OpeningDate").toLocalDate());
+
             return obj;
         }
     }
 
     public boolean closeAccount(long accNumber) throws SQLException{
-        String sql = "UPDATE bankaccounts SET Status = 'Closed' WHERE bankaccount=?";
+        String sql = "UPDATE bankaccounts SET Status = 'Closed' WHERE AccountNumber = ?";
         try(Connection conn = DBUtil.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);){
+
+            ps.setLong(1,accNumber);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
+        }
+    }
+
+    public void updateBalance(Account acc)throws SQLException{
+        String sql = "UPDATE bankaccounts SET Balance = ? WHERE AccountNumber = ?";
+        try(Connection conn = DBUtil.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);){
+
+            ps.setDouble(1,acc.getBalance());
+            ps.setLong(2,acc.getAccountNumber());
+
+            ps.executeUpdate();
         }
     }
 }

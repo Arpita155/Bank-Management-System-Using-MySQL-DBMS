@@ -95,7 +95,7 @@ public class BankService {
     public void accountDetails(long accNumber){
 
     }
-    public void updateCustomerDetails(String fname,String lname, ){
+    public void updateCustomerDetails(String fname,String lname,String email,String pho,String address ){
 
     }
 }

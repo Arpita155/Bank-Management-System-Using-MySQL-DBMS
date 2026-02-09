@@ -1,5 +1,4 @@
 import service.BankService;
-
 import java.util.Scanner;
 
 public class Main {
@@ -12,7 +11,7 @@ public class Main {
         do{
             System.out.println("\n=======================================");
             System.out.println("Welcome to GG bank");
-            System.out.println("=======================================");
+            System.out.println("=========================================");
             System.out.println("Choose one of the following options");
             System.out.println("1. Create new account");
             System.out.println("2. close account");
@@ -29,7 +28,7 @@ public class Main {
             sc.nextLine();
 
             switch (choice){
-                case 1:
+                case 1:    // create new account
                     System.out.println("Enter account holder's first name : ");
                     String fname = sc.nextLine();
                     System.out.println("Enter account holder's last name : ");
@@ -37,10 +36,11 @@ public class Main {
                     System.out.println("Enter account holder's email : ");
                     String email = sc.nextLine();
                     System.out.println("Enter account holder's phone number : ");
-                    String pho = sc.nextLine();
+                    String pno = sc.nextLine();
                     System.out.println("Enter account holder's address : ");
                     String address = sc.nextLine();
-                    service.createAccount(fname,lname,email,pho,address);
+                    service.createAccount(fname,lname,email,pno,address);
+                    break;
                 case 2:
                     System.out.print("Enter bank account number : ");
                     long accNumber = sc.nextLong();
@@ -58,7 +58,7 @@ public class Main {
                     accNumber = sc.nextLong();
                     System.out.print("Enter the amount to deposit");
                     amount = sc.nextDouble();
-                    service.deposite(accNumber,amount);
+                    service.deposit(accNumber,amount);
                     break;
                 case 5:
                     System.out.println("Enter your bank account number : ");
@@ -80,20 +80,21 @@ public class Main {
                     service.accountDetails(accNumber);
                     break;
                 case 8:
-                    System.out.println("Enter account holder's first name : ");
+                    // we have to take account number
+                    System.out.print("Enter first name : ");
                     fname = sc.nextLine();
-                    System.out.println("Enter account holder's last name : ");
+                    System.out.print("Enter last name : ");
                     lname = sc.nextLine();
-                    System.out.println("Enter account holder's email : ");
+                    System.out.print("Enter email : ");
                     email = sc.nextLine();
-                    System.out.println("Enter account holder's phone number : ");
-                    pho = sc.nextLine();
-                    System.out.println("Enter account holder's address : ");
+                    System.out.print("Enter phone number : ");
+                    pno = sc.nextLine();
+                    System.out.print("Enter address : ");
                     address = sc.nextLine();
-                    service.updateCustomerDetails(fname,lname,email,pho,address);
+                    service.updateCustomerDetails(fname,lname,email,pno,address);
 
                 case 9:
-                    System.out.println("Thank you for visiting gg bank");
+                    System.out.println("Thank you for visiting GG bank!\nHave a wonderful day ahead.");
                     System.out.println();
                     System.out.println("=====================================");
                     break;

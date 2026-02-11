@@ -162,6 +162,14 @@ public class BankService {
 
     public void transfer(long accNumber, long recAccNumber, double amount){
 
+        // gets senders account
+        // get receivers account
+        // check if these accounts are valid or not.
+        // check if specified withdrawal amount is less than the permitted limits.
+        // if YES, then initiate transaction.
+        // deduct from senders account, create a transaction.
+        // add amount to receivers account, create a transaction
+
     }
 
     public void transactionHistory(long accNumber){
@@ -177,11 +185,11 @@ public class BankService {
             System.out.println("=====================================");
             System.out.println("\t\t\tACCOUNT DETAILS");
             System.out.println("=====================================");
-            System.out.println("Account Number : " + acc.getAccountNumber());
-            System.out.println("Account Type : " + acc.getAccountType());
-            System.out.println("Account Status : " + acc.getStatus());
+            System.out.println("Account Number       : " + acc.getAccountNumber());
+            System.out.println("Account Type         : " + acc.getAccountType());
+            System.out.println("Account Status       : " + acc.getStatus());
             System.out.println("Account opening date : " + acc.getOpeningDate());
-            System.out.println("Account Balance : " + acc.getBalance());
+            System.out.println("Account Balance      : " + acc.getBalance());
             System.out.println("=====================================");
         } catch(exception.AccountNotFoundException | SQLException e) {
             System.out.println("Error: " + e.getMessage());

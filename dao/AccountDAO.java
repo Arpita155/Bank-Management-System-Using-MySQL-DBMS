@@ -1,5 +1,6 @@
 package dao;
 
+import exception.AccountNotFoundException;
 import model.Account;
 import util.DBUtil;
 
@@ -27,21 +28,24 @@ public class AccountDAO {
         return true;
     }
 
-    public Account getAccount(long accNumber) throws SQLException{
+    public Account getAccount(long accNumber) throws SQLException, AccountNotFoundException {
         // sql query preparation
-        String sql = "SELECT * FROM bankaccounts WHERE AccountNumber = ?";   // leading the data. I am not modifying anything
+        String sql = "SELECT * FROM bankaccounts WHERE AccountNumber = ?";   // reading the data. I am not modifying anything
 
         // create connection. prepare the sql statement for execution.
         try(Connection conn = DBUtil.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);){
-
+            PreparedStatement ps = conn.prepareStatement(sql);)
+        {
             ps.setLong(1,accNumber);
 
             // execute the query
             ResultSet record = ps.executeQuery();   // this will store the ROW returned by the DBMS upon execution of SQL statement.
 
             // extract details from the ResultSet and create an object of Account class.
-            record.next();
+            boolean flag = record.next();
+            if(!flag){
+                throw new AccountNotFoundException("Account does not exist at GG bank.");
+            }
             Account obj = new Account(
                     record.getLong("AccountNumber"),
                     record.getInt("CustomerID"),
@@ -57,8 +61,8 @@ public class AccountDAO {
     public boolean closeAccount(long accNumber) throws SQLException{
         String sql = "UPDATE bankaccounts SET Status = 'Closed' WHERE AccountNumber = ?";
         try(Connection conn = DBUtil.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);){
-
+            PreparedStatement ps = conn.prepareStatement(sql);)
+        {
             ps.setLong(1,accNumber);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -68,12 +72,23 @@ public class AccountDAO {
     public void updateBalance(Account acc)throws SQLException{
         String sql = "UPDATE bankaccounts SET Balance = ? WHERE AccountNumber = ?";
         try(Connection conn = DBUtil.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);){
-
+        PreparedStatement ps = conn.prepareStatement(sql);)
+        {
             ps.setDouble(1,acc.getBalance());
             ps.setLong(2,acc.getAccountNumber());
 
             ps.executeUpdate();
+        }
+    }
+
+    public boolean transactionUpdateBalance(Account acc, Connection conn) throws SQLException{
+        String sql = "UPDATE bankaccounts SET Balance = ? WHERE AccountNumber = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setDouble(1,acc.getBalance());
+            ps.setLong(2,acc.getAccountNumber());
+
+            return ps.executeUpdate() > 0;
         }
     }
 }

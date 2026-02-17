@@ -13,8 +13,8 @@ public class CustomerDAO {
         String sql = "INSERT INTO customers (FirstName, LastName, Email, PhoneNumber, Address) VALUES (?,?,?,?,?)";
 
         try(Connection conn = DBUtil.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
-
+            PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS))
+        {
             // execute the statement
             ps.setString(1,customer.getFirstName());
             ps.setString(2,customer.getLastName());
@@ -26,7 +26,6 @@ public class CustomerDAO {
             if(updatedRows == 0){
                 return -1;
             }
-
             // store the response.
             ResultSet keys = ps.getGeneratedKeys();
 

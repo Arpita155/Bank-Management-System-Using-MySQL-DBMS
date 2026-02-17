@@ -34,8 +34,8 @@ public class Transaction {
         return transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public void setTransactionId(int v) {
+        this.transactionId = v;
     }
 
     public String getTransactionType() {

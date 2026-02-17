@@ -11,8 +11,8 @@ public class TransactionDAO {
     public void addTransaction(Transaction t)throws SQLException {
         String sql = "INSERT INTO transactions (AccountNumber, TransactionType, Amount, TransactionDate, RelatedAccountNumber, Description) VALUES (?,?,?,?,?,?)";
         try(Connection con = DBUtil.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);){
-
+            PreparedStatement ps = con.prepareStatement(sql);
+        ){
             ps.setLong(1,t.getAccountNumber());
             ps.setString(2,t.getTransactionType());
             ps.setDouble(3,t.getAmount());

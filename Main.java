@@ -22,11 +22,12 @@ public class Main {
             System.out.println("7. View account details");
             System.out.println("8. Update account details");
             System.out.println("9. exit");
+            System.out.println("=========================================");
 
             System.out.println("Enter your choice: ");
             choice = sc.nextInt();
             sc.nextLine();
-
+            System.out.println("=========================================");
             switch (choice){
                 case 1:    // create new account
                     System.out.println("Enter account holder's first name : ");
@@ -49,23 +50,23 @@ public class Main {
                 case 3:
                     System.out.print("Enter bank account number : ");
                     accNumber = sc.nextLong();
-                    System.out.print("Enter the amount to withdraw");
+                    System.out.print("Enter the amount to withdraw : ");
                     double amount = sc.nextDouble();
                     service.withdraw(accNumber,amount);
                     break;
                 case 4:
                     System.out.print("Enter bank account number : ");
                     accNumber = sc.nextLong();
-                    System.out.print("Enter the amount to deposit");
+                    System.out.print("Enter the amount to deposit : ");
                     amount = sc.nextDouble();
                     service.deposit(accNumber,amount);
                     break;
                 case 5:
                     System.out.println("Enter your bank account number : ");
                     accNumber = sc.nextLong();
-                    System.out.println("Enter receiver's bank account number");
+                    System.out.println("Enter receiver's bank account number : ");
                     long recAccNumber = sc.nextLong();
-                    System.out.println("Enter amount ");
+                    System.out.println("Enter amount : ");
                     amount = sc.nextDouble();
                     service.transfer(accNumber,recAccNumber,amount);
                     break;
@@ -80,7 +81,7 @@ public class Main {
                     service.accountDetails(accNumber);
                     break;
                 case 8:
-                    // we have to take account number
+                    // we have to take account number.
                     System.out.print("Enter first name : ");
                     fname = sc.nextLine();
                     System.out.print("Enter last name : ");
@@ -99,8 +100,8 @@ public class Main {
                     System.out.println("=====================================");
                     break;
                 default:
-                    System.out.println("Invalid selection");
-                    System.out.println("Please enter correct option");
+                    System.out.println("Invalid selection.");
+                    System.out.println("Please enter correct option.");
             }
         }while (choice != 9);
 

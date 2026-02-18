@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BankService {
     private CustomerDAO customerDAO = new CustomerDAO();
@@ -46,7 +47,7 @@ public class BankService {
             long accNumber = this.generateAccountNumber();
             Account account = new Account(accNumber,customerID,"Savings",0.0,"Active", LocalDate.now());
             if(accountDAO.createAccount(account)){
-                System.out.println("Account created successfully. \n your account number : "+accNumber);
+                System.out.println("Account created successfully.\nyour account number : "+accNumber);
             }else{
                 System.out.println("Failed to create bank account.");
             }
@@ -237,7 +238,41 @@ public class BankService {
     }
 
     public void transactionHistory(long accNumber){
+        boolean flag = true;
+        try {
+            // check if the account exists in DB, get the bankAccount
+            Account account = accountDAO.getAccount(accNumber);
+            if (account == null) {
+                throw new AccountNotFoundException("Account does not exist at GG Bank.");
+            }
 
+            // bank account already exist. BUT. it's already closed.
+            if (account.getStatus().equalsIgnoreCase("closed")) {
+                throw new AccountClosedException("Account already closed.");
+            }
+
+            // if account is available then, get all transaction related to this bankAccount.
+            List<Transaction> allTransactions = transactionDAO.getAllTransactions(accNumber);
+            if(allTransactions.isEmpty()) {
+                System.out.println("No transactions were performed for account - " + accNumber);
+            } else {
+                for(Transaction t : allTransactions) {
+                    System.out.println();
+                    System.out.println("Date of Transaction : " + t.getTransactionDate());
+                    System.out.println("Transaction Type    : " + t.getTransactionType());
+                    if(t.getTransactionType().equals("Transfer")) {
+                        System.out.println("From                : " + t.getRelatedAccountNumber());
+                        System.out.println("To(your account)    : " + t.getAccountNumber());
+                    }
+                    System.out.println("Amount              : ₹" + t.getAmount());
+                    System.out.println("Description         : " + t.getDescription());
+                    System.out.println();
+                    System.out.println();
+                }
+            }
+        } catch(AccountNotFoundException | AccountClosedException | SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public void accountDetails(long accNumber){
@@ -259,7 +294,7 @@ public class BankService {
             System.out.println("Error: " + e.getMessage());
         }
     }
-    public void updateCustomerDetails(String fname,String lname,String email,String pho,String address ){
+    public void updateCustomerDetails(String fname,String lname,String email, String pho,String address ){
 
     }
 }
